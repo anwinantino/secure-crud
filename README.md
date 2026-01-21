@@ -1,88 +1,58 @@
 # Secure-CRUD
 
-Secure-CRUD is a production-style multi-container CRUD system built using Node.js, MongoDB, and Nginx.  
-It demonstrates reverse proxy architecture, container isolation, persistent storage, non-root containers, and CI/CD automation.
+**Secure-CRUD** is a production-style multi-container CRUD system built using Node.js, MongoDB, and Nginx. It demonstrates reverse proxy architecture, container isolation, persistent storage, non-root containers, and CI/CD automation.
 
 ---
 
-## 🏗 System Architecture
+## System Architecture
 
-The system consists of three services running in a private Docker network:
+The system consists of three services running within a private Docker network to ensure maximum isolation.
 
-| Service  | Technology | Role |
-|----------|------------|------|
-| Proxy    | Nginx      | Gatekeeper. Receives all traffic on port 80 and routes it to the App |
-| App      | Node.js    | Handles CRUD logic and communicates with the database |
-| Database | MongoDB   | Persists application data using a Docker volume |
 
-**Security Design:**
-- App and Database containers are not exposed to the host
-- Only the Nginx proxy maps a host port (80)
-- App container runs as a non-root user
-- Database credentials are injected via environment variables
 
----
+| Service | Technology | Role |
+| :--- | :--- | :--- |
+| **Proxy** | Nginx | Receives all traffic on port 80 and routes it to the App. |
+| **App** | Node.js | Handles CRUD logic and communicates with the database. |
+| **Database** | MongoDB | Persists application data using a Docker volume. |
 
-## 🚀 Features
-
-- Full CRUD API for Task records
-- Health check endpoint
-- Reverse proxy using Nginx
-- Private Docker networking
-- Persistent MongoDB storage using volumes
-- Non-root application container
-- One-command deployment using `deploy.sh`
-- Automated Docker image publishing (CI/CD)
+### Security Design
+* **App and Database** containers are not exposed to the host machine.
+* Only the **Nginx proxy** maps to a host port (80).
+* The App container runs as a **non-root user** to minimize exploit surface.
+* Database credentials are securely injected via **environment variables**.
 
 ---
 
-## 🛠 Tech Stack
+## Features
 
-- Node.js (Express)
-- MongoDB
-- Nginx
-- Docker & Docker Compose
-- GitHub Actions
+* **Full CRUD API:** Comprehensive endpoints for Task management.
+* **Reverse Proxy:** Managed via Nginx for secure traffic routing.
+* **Container Isolation:** Private Docker networking prevents direct DB access.
+* **Data Persistence:** Persistent MongoDB storage using Docker volumes.
+* **Security First:** Non-root application containers and slim base images.
+* **One-Command Deployment:** Simplified setup via `deploy.sh`.
+* **CI/CD:** Automated Docker image publishing to Docker Hub.
 
 ---
 
-## 📁 Repository Structure
+## Tech Stack
 
-```plaintext
+* **Backend:** Node.js (Express)
+* **Database:** MongoDB
+* **Proxy:** Nginx
+* **Orchestration:** Docker & Docker Compose
+* **Automation:** GitHub Actions & Bash scripts
+
+---
+
+## Repository Structure
+
+```text
 .
-├── src/                 # App source code
+├── src/                # App source code
 ├── nginx/              # Nginx configuration files
 ├── docker-compose.yml  # Orchestration file
 ├── Dockerfile          # App container instructions
 ├── deploy.sh           # Automation script
 └── README.md           # Setup instructions & Docker Hub link
-## ⚙️ Setup & Run
-
-### Prerequisites
-
-- Docker  
-- Docker Compose  
-
----
-
-### One-Command Deployment
-
-```bash
-./deploy.sh
-Expected output:
-
-```text
-[SUCCESS] Application is live at http://localhost
-## 🔍 API Endpoints
-
-| Method | Endpoint        | Description    |
-|--------|-----------------|----------------|
-| GET    | /health         | Health check   |
-| POST   | /tasks          | Create task    |
-| GET    | /tasks          | Get all tasks  |
-| PUT    | /tasks/:id      | Update task    |
-| DELETE | /tasks/:id      | Delete task    |
-## 🐳 Docker Hub Image
-
-Public Docker image:  
-https://hub.docker.com/r/anwinantino/secure-crud
